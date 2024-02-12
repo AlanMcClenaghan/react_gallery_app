@@ -1,4 +1,4 @@
-import { useState } from 'react'
+import { useEffect, useState } from 'react'
 import { Route, Routes, Navigate } from "react-router-dom";
 
 import './App.css'
@@ -13,6 +13,15 @@ import PhotoList from "./components/PhotoList.jsx";
 
 function App() {
   // console.log(apiKey);
+
+  const [photos, setPhotos] = useState([]);
+
+  const fetchData = (query) => {
+    fetch(`https://www.flickr.com/services/rest/?method=flickr.photos.search&api_key=${apiKey}&tags=${query}&per_page=24&format=json&nojsoncallback=1`)
+    .then(response => response.json())
+    .then(responseData => setPhotos(responseData))
+    .catch(error => console.log("Error fetching and parsing date", error));
+  }
 
   return (
     <div className="container">
