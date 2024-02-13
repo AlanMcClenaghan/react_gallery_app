@@ -32,15 +32,12 @@ function App() {
   // Create a fetchData function that will handle the fetch requests.
   const fetchData = (query) => {
     setLoading(true);
-    console.log(loading)
 
     fetch(`https://www.flickr.com/services/rest/?method=flickr.photos.search&api_key=${apiKey}&tags=${query}&per_page=24&format=json&nojsoncallback=1`)
     .then(response => response.json())
     .then(responseData => {
       setPhotos(responseData.photos.photo);
-      console.log(photos);
       setLoading(false);
-      console.log(loading);
     })
     .catch(error => console.log("Error fetching and parsing date", error));
   }
