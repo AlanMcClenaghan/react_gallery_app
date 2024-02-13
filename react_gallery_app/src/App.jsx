@@ -36,11 +36,13 @@ function App() {
 
     fetch(`https://www.flickr.com/services/rest/?method=flickr.photos.search&api_key=${apiKey}&tags=${query}&per_page=24&format=json&nojsoncallback=1`)
     .then(response => response.json())
-    .then(responseData => setPhotos(responseData.photos.photo))
+    .then(responseData => {
+      setPhotos(responseData.photos.photo);
+      console.log(photos);
+      setLoading(false);
+      console.log(loading);
+    })
     .catch(error => console.log("Error fetching and parsing date", error));
-
-    setLoading(false);
-    console.log(loading);
   }
 
   // useEffect Hook
@@ -77,33 +79,30 @@ function App() {
         {
           (loading)
           ? <Loading />
-          :
-            {/* Set up your <Routes> and <Route> components. */}
-            <Routes>
-            {/* / - Home route: when visiting the home route, 
-            the user should be redirected to the first static route. */}
-            <Route path="/" element={<Navigate replace to="/cats" />} />
+          : <Routes>
+                {/* Set up your <Routes> and <Route> components. */}
+                {/* / - Home route: when visiting the home route, 
+                the user should be redirected to the first static route. */}
+                <Route path="/" element={<Navigate replace to="/cats" />} />
 
-            {/* 3 static routes for default topics, 
-            for example /cats, /dogs and /computers. 
-            These will be used in the navigation component, 
-            feel free to customize these topics. 
-            These should render the PhotoList component. */}
-            <Route path="/cats" element={<PhotoList data={photos} title={'cats'}/>} />
-            <Route path="/dogs" element={<PhotoList data={photos} title={'dogs'}/>} />
-            <Route path="/computers" element={<PhotoList data={photos} title={'computers'}/>} />
+                {/* 3 static routes for default topics, 
+                for example /cats, /dogs and /computers. 
+                These will be used in the navigation component, 
+                feel free to customize these topics. 
+                These should render the PhotoList component. */}
+                <Route path="/cats" element={<PhotoList data={photos} title={'cats'}/>} />
+                <Route path="/dogs" element={<PhotoList data={photos} title={'dogs'}/>} />
+                <Route path="/computers" element={<PhotoList data={photos} title={'computers'}/>} />
 
-            {/* /search/:query - route to handle user search queries.
-            This should render the PhotoList component. */}
-            <Route path="/search/:query" element={<PhotoList data={photos} title={`query`}/>} />
+                {/* /search/:query - route to handle user search queries.
+                This should render the PhotoList component. */}
+                <Route path="/search/:query" element={<PhotoList data={photos} title={`query`}/>} />
 
-            {/* 404 Error - Include a 404-like error route that displays a friendly 404 error page 
-            when a URL does not match an existing route. */}
-            <Route path="/*" element={<Error404 />} />
-        </Routes>
+                {/* 404 Error - Include a 404-like error route that displays a friendly 404 error page 
+                when a URL does not match an existing route. */}
+                <Route path="/*" element={<Error404 />} />
+            </Routes>
         }
-
-
   </div>
   )
 }

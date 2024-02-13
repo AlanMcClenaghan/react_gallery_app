@@ -1,9 +1,11 @@
 const Loading = () => {
 
     return (
-        <li className="not-found">
+        <div>
+            {/* CSS Loader from W3Schools */}
             <h3>Loading...</h3>
-        </li>
+            <div class="loader"></div>
+        </div>
     );
 }
 
