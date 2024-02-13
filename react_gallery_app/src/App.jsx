@@ -21,7 +21,7 @@ function App() {
 
   // Loading Indicator
   // Add a loading indicator that displays each time the app fetches new data.
-  const [loading, setLoading] = useState(true);
+  const [loading, setLoading] = useState(false);
 
   // useNavigate hook
   const navigate = useNavigate();
@@ -52,18 +52,19 @@ function App() {
       fetchData("dogs");
     } else if (path === "computers") {
       fetchData("computers");
+    } else if (path.startsWith("search/")) {
+      path = path.replace('search/','')
+      setQuery(path);
+      // Call the fetchData function and pass it the query entered by the user.
+      fetchData(path);
     }
   }, [location]);
 
   // Create a handler that is triggered when the form is being submitted.
   const handleQueryChange = (searchText) => {
-    setLoading(true);
     setQuery(searchText);
-    // Call the fetchData function and pass it the query entered by the user.
-    fetchData(searchText);
     // Redirect the user to the /search/:query route. In the Nav component, set up your links using the <NavLink> component.
     navigate(`/search/${searchText}`);
-    setLoading(false);
   }
 
   return (
@@ -93,7 +94,7 @@ function App() {
 
                 {/* /search/:query - route to handle user search queries.
                 This should render the PhotoList component. */}
-                <Route path="/search/:query" element={<PhotoList data={photos} title={`query`}/>} />
+                <Route path="/search/:query" element={<PhotoList data={photos} title={query}/>} />
 
                 {/* 404 Error - Include a 404-like error route that displays a friendly 404 error page 
                 when a URL does not match an existing route. */}
